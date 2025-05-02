@@ -25,15 +25,16 @@ router.post("/register", async(req: Request, res: Response) => {
     const hashedPassword = await bycrypt.hash(password, 10);
 
     users.push({ username, email, password : hashedPassword });
-     res.status(201).json({ message : "User created successfully !"});
+    res.status(201).json({ message : "User created successfully !"});
 });
 
 router.post("/login", async(req: Request, res: Response) => {
     const { username, password } = req.body;
 
     const user = users.find(user => user.username === username);
+
     if(!user){
-         res.status(400).json({ message : "Invalid username or password !"});  
+        res.status(400).json({ message : "Invalid username or password !"});  
     }
 
     if(user){
@@ -44,7 +45,7 @@ router.post("/login", async(req: Request, res: Response) => {
     }
     const token = jwt.sign({username : username}, process.env.JWT_SECRET!, { expiresIn: '1h' });
 
-     res.status(200).json({token});
+    res.status(200).json({token});
 });
 
 router.get("/profile", async(req: Request, res: Response) => {
